@@ -2,17 +2,24 @@
 #define G_LEVEL_H
 
 #include "GDefines.h"
+#include "core/Event.h"
 
 #include <string>
 #include <memory>
+#include <queue>
 
 namespace GPlay::Game {
 
+using namespace GPlay::Core;
+
 class Level {
   std::string name;
- 
+
+protected:
+  std::queue<Event>* m_pEventQueue;
+
 public:
-  Level(const std::string& name) : name{name} {}
+  Level(const std::string& name, std::queue<Event>* pEventQueue) : name{name}, m_pEventQueue {pEventQueue} {}
   virtual ~Level(){}
 
   virtual void Init() = 0;

@@ -13,7 +13,10 @@ using namespace GPlay::Core;
 using namespace GPlay::Game;
 
 Game::Game(std::unique_ptr<FrameTimer> gameTimer) : m_GameTimer{std::move(gameTimer)} {
-  m_Levels.push(std::make_unique<TestLevel>("Test Level"));
+  m_Levels.push(std::make_unique<TestLevel>("Test Level", &m_EventQueue));
+  
+  GLOG("Levels loaded:")
+  GLOG(m_Levels.size())
 }
 
 void Game::Initialize(const Game::WindowDesc& windowDescription) {
@@ -25,6 +28,10 @@ void Game::Initialize(const Game::WindowDesc& windowDescription) {
 
 void Game::Run() {
   m_IsRunning = true;
+  
+  std::unique_ptr<Level> firstLevel = std::move(m_Levels.front());
+  m_Levels.pop();
+  m_pCurrentLevel = firstLevel.get();
 
   // Probably move this to a Frame function or something.
   while(IsRunning()) {
@@ -48,12 +55,9 @@ void Game::UpdateState(double deltaTime) {
   if(!m_IsRunning)
     return;
 	    
-  // Test code
-  static float x {0};
-  x += (deltaTime*500);
-
-  m_EventQueue.emplace(EntityMovementEvent{x, 10.0f});
-  std::cout << x << std::endl; 
+  if(m_pCurrentLevel->IsReady()) {
+    m_pCurrentLevel->UpdateState(deltaTime);  
+  }
 
 }
 

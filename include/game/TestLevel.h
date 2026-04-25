@@ -9,7 +9,7 @@ namespace GPlay::Game {
 class TestLevel : public Level {
  
 public:
-  TestLevel(const std::string& name) : Level{name} {}
+  TestLevel(const std::string& name, std::queue<Event>* pEventQueue) : Level{name, pEventQueue} {}
   ~TestLevel(){}
 
   void Init() override;
