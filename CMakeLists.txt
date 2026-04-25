@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 4. Add the executable
-add_executable(play src/main.cpp)
+add_executable(play src/main.cpp src/core/Game.cpp)
 
 target_include_directories(play PRIVATE include)
 
