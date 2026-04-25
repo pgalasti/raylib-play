@@ -2,7 +2,7 @@
 
 using namespace GPlay::Core;
 
-void Game::Initialize() {
+void Game::Initialize(const Game::WindowDesc& windowDescription) {
 
 }
 
