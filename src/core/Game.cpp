@@ -32,6 +32,8 @@ void Game::Run() {
   std::unique_ptr<Level> firstLevel = std::move(m_Levels.front());
   m_Levels.pop();
   m_pCurrentLevel = firstLevel.get();
+  GLOG("Loading Level: ")
+  GLOG(m_pCurrentLevel->GetName())
 
   // Probably move this to a Frame function or something.
   while(IsRunning()) {

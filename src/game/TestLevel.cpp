@@ -18,8 +18,11 @@ void TestLevel::UpdateState(double deltaTime) {
   static float x {0};
   x += (deltaTime*500);
 
-  m_pEventQueue->emplace(EntityMovementEvent{x, 10.0f});
-
+  int idInt {m_EntityIDGenerator.GetNextId()};
+  EntityID id {static_cast<EntityID>(idInt)};  
+  m_pEventQueue->emplace(EntityMovementEvent{id, x, 10.0f});
+  GLOG("entity id: ")
+  GLOG(id)
 }
   
 void TestLevel::End(bool status) {

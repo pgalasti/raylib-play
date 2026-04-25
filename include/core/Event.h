@@ -7,10 +7,11 @@
 
 namespace GPlay::Core {
 
-struct EntityMovementEvent   { 
+struct EntityMovementEvent   {
+  EntityID entityId;  
   float x, y; 
 
-  EntityMovementEvent(float x, float y) : x{x}, y{y} {} 
+  EntityMovementEvent(EntityID id, float x, float y) : entityId{id}, x{x}, y{y} {} 
 };
 // Other event types here
 

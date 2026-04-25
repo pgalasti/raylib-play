@@ -1,3 +1,6 @@
 [submodule "external/raylib"]
 	path = external/raylib
 	url = https://github.com/raysan5/raylib.git
+[submodule "external/g-lib"]
+	path = external/g-lib
+	url = https://github.com/pgalasti/g-lib
