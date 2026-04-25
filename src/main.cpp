@@ -20,9 +20,7 @@ int main(int argc, char** argv) {
   while(game->IsRunning()) {
     
     game->PollInput();
-
     game->UpdateState(0.0);
-
     game->RenderScreen();
 
   }
