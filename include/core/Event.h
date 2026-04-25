@@ -7,27 +7,15 @@
 
 namespace GPlay::Core {
 
-struct BlankPayload {};
-struct EntityMovementPayload {
-  EntityID entity;
-  float x;
-  float y;
+struct EntityMovementEvent   { 
+  float x, y; 
+
+  EntityMovementEvent(float x, float y) : x{x}, y{y} {} 
 };
+// Other event types here
 
-class Event {
 
-public:
-  
-  Event(EntityMovementPayload payload) : m_Payload{std::move(payload)} {} 
-
-  template <typename T>
-  Event(T data) : m_Payload {std::move(data)} {}
-
-  const EntityMovementPayload& payload() const noexcept { return m_Payload; }
-
-private:
-  EntityMovementPayload m_Payload;
-};
+using Event = std::variant<EntityMovementEvent>; // Add new types here.
 
 } // GPlay::Core namespace
 

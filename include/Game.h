@@ -15,7 +15,8 @@ class Game {
 
   bool m_IsRunning  {false};
   std::unique_ptr<FrameTimer> m_GameTimer;
-  std::queue<Event> m_EventQueue;
+  std::queue<Event> m_EventQueue; // Turn this into a formal manager
+
 public:
   struct WindowDesc {
     int Width                   {0};

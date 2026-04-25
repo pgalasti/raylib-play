@@ -44,12 +44,12 @@ void Game::UpdateState(double deltaTime) {
   m_IsRunning = !WindowShouldClose();
   if(!m_IsRunning)
     return;
-  static size_t id{0};
+	    
+  // Test code
+  static float x {0};
+  x += (deltaTime*50);
 
-  static float x{0.0f};
-
-  x += (deltaTime*10);
-  m_EventQueue.emplace(EntityMovementPayload{++id, x, 10.0f});
+  m_EventQueue.emplace(EntityMovementEvent{x, 10.0f});
   std::cout << x << std::endl; 
 
 }
@@ -63,8 +63,14 @@ void Game::RenderScreen() {
     Event event = m_EventQueue.front();
     m_EventQueue.pop();
 
-    Vector2 deltaCircle = { event.payload().x, 800.0f/3.0f };
-    DrawCircleV(deltaCircle, 32, RED);
+    std::visit([](const auto& e) {
+      using T = std::decay_t<decltype(e)>;
+      if constexpr (std::is_same_v<T, EntityMovementEvent>) {
+        Vector2 deltaCircle = { e.x, 800.0f/3.0f };
+        DrawCircleV(deltaCircle, 32, RED);
+      }
+    }, event);
+
   }
 
   EndDrawing();
