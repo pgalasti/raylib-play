@@ -16,4 +16,5 @@ add_executable(play src/main.cpp src/core/Game.cpp)
 
 target_include_directories(play PRIVATE include)
 target_link_libraries(play PRIVATE raylib)
+target_compile_definitions(play PRIVATE $<$<CONFIG:Debug>:_DEBUG>)
 

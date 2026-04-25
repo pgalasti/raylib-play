@@ -1,3 +1,4 @@
+#include "GDefines.h"
 #include "Game.h"
 #include "FrameTimer.h"
 #include "core/Event.h"
@@ -47,7 +48,7 @@ void Game::UpdateState(double deltaTime) {
 	    
   // Test code
   static float x {0};
-  x += (deltaTime*50);
+  x += (deltaTime*500);
 
   m_EventQueue.emplace(EntityMovementEvent{x, 10.0f});
   std::cout << x << std::endl; 
@@ -77,6 +78,10 @@ void Game::RenderScreen() {
 }
 
 void Game::Cleanup() {
+
+  GLOG("Event Queue Size on cleanup: ")
+  GLOG(m_EventQueue.size())
+  std::cout << m_EventQueue.size() << std::endl;
 
   while(!m_EventQueue.empty())
     m_EventQueue.pop();
