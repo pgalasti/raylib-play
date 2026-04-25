@@ -12,7 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_subdirectory(external/raylib)
 
 # 5. Add the executable
-add_executable(play src/main.cpp src/core/Game.cpp)
+add_executable(play src/main.cpp src/core/Game.cpp src/game/TestLevel.cpp)
 
 target_include_directories(play PRIVATE include)
 target_link_libraries(play PRIVATE raylib)

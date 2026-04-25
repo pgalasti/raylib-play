@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "FrameTimer.h"
 #include "core/Event.h"
+#include "game/TestLevel.h"
 
 #include <raylib.h>
 
@@ -9,9 +10,10 @@
 #include <iostream> // Remove
 
 using namespace GPlay::Core;
+using namespace GPlay::Game;
 
 Game::Game(std::unique_ptr<FrameTimer> gameTimer) : m_GameTimer{std::move(gameTimer)} {
-
+  m_Levels.push(std::make_unique<TestLevel>("Test Level"));
 }
 
 void Game::Initialize(const Game::WindowDesc& windowDescription) {
@@ -81,7 +83,6 @@ void Game::Cleanup() {
 
   GLOG("Event Queue Size on cleanup: ")
   GLOG(m_EventQueue.size())
-  std::cout << m_EventQueue.size() << std::endl;
 
   while(!m_EventQueue.empty())
     m_EventQueue.pop();

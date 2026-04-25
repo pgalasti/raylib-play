@@ -3,6 +3,7 @@
 
 #include "FrameTimer.h"
 #include "core/Event.h"
+#include "game/Level.h"
 
 #include <string_view>
 #include <memory>
@@ -10,12 +11,14 @@
 
 
 namespace GPlay::Core {
+using namespace GPlay::Game;
 
 class Game {
 
   bool m_IsRunning  {false};
   std::unique_ptr<FrameTimer> m_GameTimer;
   std::queue<Event> m_EventQueue; // Turn this into a formal manager
+  std::queue<std::unique_ptr<Level>> m_Levels;     // Turn this into a formal manager
 
 public:
   struct WindowDesc {
