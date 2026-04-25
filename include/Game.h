@@ -2,9 +2,12 @@
 #define GAME_H
 
 #include "FrameTimer.h"
+#include "core/Event.h"
 
 #include <string_view>
 #include <memory>
+#include <queue>
+
 
 namespace GPlay::Core {
 
@@ -12,7 +15,7 @@ class Game {
 
   bool m_IsRunning  {false};
   std::unique_ptr<FrameTimer> m_GameTimer;
-
+  std::queue<Event> m_EventQueue;
 public:
   struct WindowDesc {
     int Width                   {0};
@@ -30,6 +33,7 @@ public:
   void PollInput();
   void UpdateState(double deltaTime);
   void RenderScreen();
+  void Cleanup();
 
   inline bool IsRunning() const     { return m_IsRunning; }
 

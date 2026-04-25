@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "FrameTimer.h"
+#include "core/Event.h"
 
 #include <raylib.h>
 
@@ -29,9 +30,9 @@ void Game::Run() {
     PollInput();
     UpdateState(delta);
     RenderScreen();
-
-    std::cout << delta << std::endl;
   }
+
+  Cleanup();
 
 }
 
@@ -43,10 +44,34 @@ void Game::UpdateState(double deltaTime) {
   m_IsRunning = !WindowShouldClose();
   if(!m_IsRunning)
     return;
+  static size_t id{0};
+
+  static float x{0.0f};
+
+  x += (deltaTime*10);
+  m_EventQueue.emplace(EntityMovementPayload{++id, x, 10.0f});
+  std::cout << x << std::endl; 
+
 }
 
 void Game::RenderScreen() {
   BeginDrawing();
+  
   DrawText("Should see this window", 0, 0, 50, LIGHTGRAY);
+
+  if (!m_EventQueue.empty()) {
+    Event event = m_EventQueue.front();
+    m_EventQueue.pop();
+
+    Vector2 deltaCircle = { event.payload().x, 800.0f/3.0f };
+    DrawCircleV(deltaCircle, 32, RED);
+  }
+
   EndDrawing();
+}
+
+void Game::Cleanup() {
+
+  while(!m_EventQueue.empty())
+    m_EventQueue.pop();
 }
