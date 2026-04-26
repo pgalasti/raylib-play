@@ -3,6 +3,7 @@
 
 #include "GDefines.h"
 #include "core/Event.h"
+#include "core/EventBus.h"
 
 #include <string>
 #include <memory>
@@ -16,11 +17,11 @@ class Level {
   std::string name;
 
 protected:
-  std::queue<Event>* m_pEventQueue;
+  EventBus* m_pEventBus;
 
 public:
-  Level(const std::string& name, std::queue<Event>* pEventQueue) 
-	  : name{name}, m_pEventQueue {pEventQueue} {}
+  Level(const std::string& name, EventBus* pEventBus) 
+	  : name{name}, m_pEventBus{pEventBus} {}
   virtual ~Level(){}
 
   virtual void Init()                           = 0;

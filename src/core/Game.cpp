@@ -13,7 +13,7 @@ using namespace GPlay::Core;
 using namespace GPlay::Game;
 
 Game::Game(std::unique_ptr<FrameTimer> gameTimer) : m_GameTimer{std::move(gameTimer)} {
-  m_Levels.push(std::make_unique<TestLevel>("Test Level", &m_EventQueue));
+  m_Levels.push(std::make_unique<TestLevel>("Test Level", &m_EventBus));
   
   GLOG("Levels loaded:")
   GLOG(m_Levels.size())
@@ -34,6 +34,9 @@ void Game::Run() {
   m_pCurrentLevel = firstLevel.get();
   GLOG("Loading Level: ")
   GLOG(m_pCurrentLevel->GetName())
+
+  m_pCurrentLevel->Init();
+  m_pCurrentLevel->Load();
 
   // Probably move this to a Frame function or something.
   while(IsRunning()) {
@@ -68,6 +71,8 @@ void Game::RenderScreen() {
   
   DrawText("Should see this window", 0, 0, 50, LIGHTGRAY);
 
+  m_EventBus.Invoke();
+/*
   if (!m_EventQueue.empty()) {
     Event event = m_EventQueue.front();
     m_EventQueue.pop();
@@ -81,15 +86,13 @@ void Game::RenderScreen() {
     }, event);
 
   }
-
+*/
   EndDrawing();
 }
 
 void Game::Cleanup() {
 
-  GLOG("Event Queue Size on cleanup: ")
-  GLOG(m_EventQueue.size())
-
-  while(!m_EventQueue.empty())
-    m_EventQueue.pop();
+  GLOG("Event Bus Size on cleanup: ")
+  GLOG(m_EventBus.Size())
+  m_EventBus.Clear();
 }

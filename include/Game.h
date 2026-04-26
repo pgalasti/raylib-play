@@ -3,6 +3,7 @@
 
 #include "FrameTimer.h"
 #include "core/Event.h"
+#include "core/EventBus.h"
 #include "game/Level.h"
 
 #include <string_view>
@@ -17,6 +18,7 @@ class Game {
 
   bool m_IsRunning  {false};
   std::unique_ptr<FrameTimer> m_GameTimer;
+  EventBus m_EventBus;
   std::queue<Event> m_EventQueue; // Turn this into a formal manager
   std::queue<std::unique_ptr<Level>> m_Levels;     // Turn this into a formal manager. Maybe change to vector for reuse
   Level* m_pCurrentLevel {nullptr};

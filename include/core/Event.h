@@ -7,7 +7,16 @@
 
 namespace GPlay::Core {
 
+enum class EventType {
+
+  EntityMovement
+  // Add new ones here
+};
+
 struct EntityMovementEvent   {
+
+  static constexpr EventType type = EventType::EntityMovement;
+
   EntityID entityId;  
   float x, y; 
 

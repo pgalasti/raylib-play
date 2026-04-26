@@ -11,8 +11,8 @@ int main(int argc, char** argv) {
   std::unique_ptr<Game> game = std::make_unique<Game>(std::make_unique<RLFrameTimer>());
 
   Game::WindowDesc windowDescription {
-    .Width      {800}, 
-    .Height     {450},
+    .Width      {1200}, 
+    .Height     {800},
     .WindowName {"Test"},
     .FPS        {60}
   };

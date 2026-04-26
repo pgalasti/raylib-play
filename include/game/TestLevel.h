@@ -3,6 +3,7 @@
 
 #include "GDefines.h"
 #include "game/Level.h"
+#include "core/EventBus.h"
 
 #include "g-lib/util/IDGenerator.h"
 
@@ -14,8 +15,8 @@ class TestLevel : public Level {
   GLib::Util::IDGenerator<int> m_EntityIDGenerator {1};
 
 public:
-  TestLevel(const std::string& name, std::queue<Event>* pEventQueue) 
-	  : Level{name, pEventQueue} {}
+  TestLevel(const std::string& name, EventBus* pEventBus) 
+	  : Level{name, pEventBus} {}
   ~TestLevel(){}
 
   void Init()                        override;
