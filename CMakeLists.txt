@@ -24,7 +24,7 @@ target_include_directories(g-lib PUBLIC external/g-lib/include)
 target_link_libraries(g-lib PRIVATE Threads::Threads)
 
 # 6. Add the executable
-add_executable(play src/main.cpp src/core/Game.cpp src/game/TestLevel.cpp src/core/EventBus.cpp)
+add_executable(play src/main.cpp src/core/Game.cpp src/game/TestLevel.cpp src/core/EventBus.cpp src/renderer/RaylibRenderer.cpp)
 
 target_include_directories(play PRIVATE include)
 target_link_libraries(play PRIVATE raylib g-lib)

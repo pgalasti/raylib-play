@@ -3,6 +3,7 @@
 #include "FrameTimer.h"
 #include "core/Event.h"
 #include "game/TestLevel.h"
+#include "renderer/RaylibRenderer.h"
 
 #include <raylib.h>
 
@@ -12,7 +13,8 @@
 using namespace GPlay::Core;
 using namespace GPlay::Game;
 
-Game::Game(std::unique_ptr<FrameTimer> gameTimer) : m_GameTimer{std::move(gameTimer)} {
+Game::Game(std::unique_ptr<FrameTimer> gameTimer, std::unique_ptr<GPlay::Renderer::Renderer> renderer) 
+	: m_GameTimer{std::move(gameTimer)}, m_pRenderer{std::move(renderer)} {
   m_Levels.push(std::make_unique<TestLevel>("Test Level", &m_EventBus));
   
   GLOG("Levels loaded:")
@@ -70,23 +72,8 @@ void Game::RenderScreen() {
   BeginDrawing();
   
   DrawText("Should see this window", 0, 0, 50, LIGHTGRAY);
-
   m_EventBus.Invoke();
-/*
-  if (!m_EventQueue.empty()) {
-    Event event = m_EventQueue.front();
-    m_EventQueue.pop();
-
-    std::visit([](const auto& e) {
-      using T = std::decay_t<decltype(e)>;
-      if constexpr (std::is_same_v<T, EntityMovementEvent>) {
-        Vector2 deltaCircle = { e.x, 800.0f/3.0f };
-        DrawCircleV(deltaCircle, 32, RED);
-      }
-    }, event);
-
-  }
-*/
+  
   EndDrawing();
 }
 

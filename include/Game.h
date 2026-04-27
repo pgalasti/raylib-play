@@ -5,6 +5,7 @@
 #include "core/Event.h"
 #include "core/EventBus.h"
 #include "game/Level.h"
+#include "renderer/RaylibRenderer.h"
 
 #include <string_view>
 #include <memory>
@@ -18,6 +19,7 @@ class Game {
 
   bool m_IsRunning  {false};
   std::unique_ptr<FrameTimer> m_GameTimer;
+  std::unique_ptr<GPlay::Renderer::Renderer> m_pRenderer;
   EventBus m_EventBus;
   std::queue<std::unique_ptr<Level>> m_Levels;     // Turn this into a formal manager. Maybe change to vector for reuse
   Level* m_pCurrentLevel {nullptr};
@@ -31,7 +33,7 @@ public:
   };
 
 
-  Game(std::unique_ptr<FrameTimer>);
+  Game(std::unique_ptr<FrameTimer>, std::unique_ptr<GPlay::Renderer::Renderer>);
 
   void Initialize(const WindowDesc& desc);
 
