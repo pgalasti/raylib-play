@@ -69,12 +69,12 @@ void Game::UpdateState(double deltaTime) {
 }
 
 void Game::RenderScreen() {
-  BeginDrawing();
-  
+  m_pRenderer->StartFrame({});
+
   DrawText("Should see this window", 0, 0, 50, LIGHTGRAY);
   m_EventBus.Invoke();
   
-  EndDrawing();
+  m_pRenderer->EndFrame({});
 }
 
 void Game::Cleanup() {

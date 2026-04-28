@@ -4,19 +4,19 @@
 #include "GDefines.h"
 #include "game/Level.h"
 #include "core/EventBus.h"
-
-#include "g-lib/util/IDGenerator.h"
+#include "core/EntityManager.h"
 
 namespace GPlay::Game {
 
 class TestLevel : public Level {
 
-  // Ugly. Should have own class shared across levels/systems
-  GLib::Util::IDGenerator<int> m_EntityIDGenerator {1};
+  GPlay::Core::EntityManager m_EntityManager;
+  EntityID playerId;
 
 public:
-  TestLevel(const std::string& name, EventBus* pEventBus) 
-	  : Level{name, pEventBus} {}
+  TestLevel(const std::string& name, EventBus* pEventBus) : Level{name, pEventBus} {
+    playerId = m_EntityManager.RegisterEntity<Player>(EntityPos{0, 266}, 32.0f);
+  }
   ~TestLevel(){}
 
   void Init()                        override;

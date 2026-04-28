@@ -5,12 +5,17 @@
 using namespace GPlay::Game;
 
 void TestLevel::Init() {
-  m_pEventBus->Subscribe<EntityMovementEvent>([](const EntityMovementEvent& e) {
-    
-    // Change this to actual entity coordinates. For now just render
-    // until that system is setup
-    Vector2 deltaCircle = { e.x, 800.0f/3.0f };
-    DrawCircleV(deltaCircle, 32, RED);
+  m_pEventBus->Subscribe<EntityMovementEvent>([this](const EntityMovementEvent& e) {
+
+    Entity* entity = m_EntityManager.Lookup(playerId);
+    if(entity == nullptr) {
+      throw 1;
+    }
+
+    entity->SetPosition({e.x, entity->GetPosition().y});
+    auto pos = entity->GetPosition();
+    Vector2 drawPos = { pos.x, pos.y };
+    DrawCircleV(drawPos, static_cast<const RadiusModel&>(entity->GetModel()).radius, RED);
   });
 }
 
@@ -27,11 +32,7 @@ void TestLevel::UpdateState(double deltaTime) {
   static float x {0};
   x += (deltaTime*500);
 
-  int idInt {m_EntityIDGenerator.GetNextId()};
-  EntityID id {static_cast<EntityID>(idInt)};  
-  m_pEventBus->Publish(EntityMovementEvent{id, x, 10.0f});
-  GLOG("entity id: ")
-  GLOG(id)
+  m_pEventBus->Publish(EntityMovementEvent{playerId, x, 10.0f});
 }
   
 void TestLevel::End(bool status) {

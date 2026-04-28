@@ -15,6 +15,7 @@ RaylibRenderer::~RaylibRenderer() {
 
 void RaylibRenderer::StartFrame(const StartFrameOptions& options) {
   BeginDrawing();
+  ClearBackground(BLACK);
 }
 
 void RaylibRenderer::EndFrame(const EndFrameOptions& options) {
