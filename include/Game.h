@@ -6,6 +6,7 @@
 #include "core/EventBus.h"
 #include "game/Level.h"
 #include "renderer/RaylibRenderer.h"
+#include "core/EntityManager.h"
 
 #include <string_view>
 #include <memory>
@@ -23,6 +24,8 @@ class Game {
   EventBus m_EventBus;
   std::queue<std::unique_ptr<Level>> m_Levels;     // Turn this into a formal manager. Maybe change to vector for reuse
   Level* m_pCurrentLevel {nullptr};
+  GPlay::Core::EntityManager m_EntityManager;
+  EntityID m_playerId;
 
 public:
   struct WindowDesc {

@@ -12,8 +12,6 @@ struct EndFrameOptions {
 };
 
 struct TextOptions {
-  TextOptions() {}
-
   std::string text;
   float       posX;
   float       posY;
