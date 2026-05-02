@@ -13,8 +13,6 @@ bool TestLevel::IsReady() const {
 }
 
 void TestLevel::UpdateState(double deltaTime) {
-  m_pEventBus->Publish(EntityMovementEvent{playerId, 10.0f, 266.0f});
-
 }
   
 void TestLevel::End(bool status) {

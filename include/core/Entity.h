@@ -53,8 +53,8 @@ constexpr EntityID PlayerID {0};
 
 struct Player : public Entity {
 
-  Player(const EntityPos& position, float radius) 
-	  : Entity(PlayerID, "Player", position, makeModel(position, radius)) {
+  Player(const EntityPos& position, float width, float height)
+	  : Entity(PlayerID, "Player", position, makeModel(position, width, height)) {
     GLOG("Creating player")
   }
   ~Player(){}
@@ -69,12 +69,13 @@ struct Player : public Entity {
   }
 
 private:
-  static std::unique_ptr<RadiusModel> makeModel(const EntityPos& position, float radius) {
-    auto m = std::make_unique<RadiusModel>();
-    m->shape  = Shape::Circle;
+  static std::unique_ptr<RectangleModel> makeModel(const EntityPos& position, float width, float height) {
+    auto m = std::make_unique<RectangleModel>();
+    m->shape  = Shape::Rectangle;
     m->xStart = position.x;
     m->yStart = position.y;
-    m->radius = radius;
+    m->width  = width;
+    m->height = height;
     return m;
   }
 };

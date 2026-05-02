@@ -26,7 +26,7 @@ void Game::Initialize(const Game::WindowDesc& windowDescription) {
 
   SetTargetFPS(fps);
 
-  m_playerId = m_EntityManager.RegisterEntity<Player>(EntityPos{10.0f, 266.0f}, 32.0f);
+  m_playerId = m_EntityManager.RegisterEntity<Player>(EntityPos{0.0f, 350.0f}, 20.0f, 100.0f);
   m_EntityManager.Lookup(m_playerId)->SetVisible(true);
 
   m_EventBus.Subscribe<EntityMovementEvent>([this](const EntityMovementEvent& e) {
@@ -34,7 +34,7 @@ void Game::Initialize(const Game::WindowDesc& windowDescription) {
     if(entity == nullptr) {
       throw 1;
     }
-    entity->SetPosition({e.x, entity->GetPosition().y});
+    entity->SetPosition({e.x, e.y});
   });
 }
 
@@ -64,7 +64,15 @@ void Game::Run() {
 }
 
 void Game::PollInput() {
-
+  // Should move to own class and have manager fetch values
+  if(IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) {
+    Entity* player = m_EntityManager.Lookup(m_playerId);
+    m_EventBus.Publish(EntityMovementEvent{m_playerId, player->GetPosition().x, player->GetPosition().y-5.0f});
+  }
+  if(IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) {
+    Entity* player = m_EntityManager.Lookup(m_playerId);
+    m_EventBus.Publish(EntityMovementEvent{m_playerId, player->GetPosition().x, player->GetPosition().y+5.0f});
+  }
 }
 
 void Game::UpdateState(double deltaTime) {

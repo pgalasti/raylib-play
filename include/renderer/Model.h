@@ -37,6 +37,11 @@ struct PolygonModel : public Model {
   float yEnd;
 };
 
+struct RectangleModel : public Model {
+  float width;
+  float height;
+};
+
 
 } // GPlay::Renderer namespace
 

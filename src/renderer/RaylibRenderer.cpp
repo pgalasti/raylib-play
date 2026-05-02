@@ -29,10 +29,17 @@ void RaylibRenderer::DrawText(const TextOptions& options) {
 void RaylibRenderer::DrawModel(const GPlay::Renderer::Model& model, const DrawOptions& options) {
   Shape shape = model.shape;
   switch(shape) {
-    case Shape::Circle:
+    case Shape::Circle: {
       const RadiusModel* circleModel = static_cast<const RadiusModel*>(&model);
-      Vector2 circle {circleModel->xStart, circleModel->yStart};
-      DrawCircleV(circle, 32, RED);
+      DrawCircleV({circleModel->xStart, circleModel->yStart}, circleModel->radius, RED);
+      break;
+    }
+    case Shape::Rectangle: {
+      const RectangleModel* rectModel = static_cast<const RectangleModel*>(&model);
+      DrawRectangleV({rectModel->xStart, rectModel->yStart}, {rectModel->width, rectModel->height}, BLUE);
+      break;
+    }
+    default:
       break;
   };
 }
