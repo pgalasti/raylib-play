@@ -26,6 +26,7 @@ class Game {
   Level* m_pCurrentLevel {nullptr};
   GPlay::Core::EntityManager m_EntityManager;
   EntityID m_playerId;
+  EntityID m_ballId {-1};
 
 public:
   struct WindowDesc {

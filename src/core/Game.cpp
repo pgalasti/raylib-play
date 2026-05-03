@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "FrameTimer.h"
 #include "core/Event.h"
+#include "game/Ball.h"
 #include "game/TestLevel.h"
 #include "renderer/RaylibRenderer.h"
 
@@ -36,6 +37,19 @@ void Game::Initialize(const Game::WindowDesc& windowDescription) {
     }
     entity->SetPosition({e.x, e.y});
   });
+  m_EventBus.Subscribe<BallCreateEvent>([this](const BallCreateEvent& e) {
+    m_ballId = m_EntityManager.RegisterEntity<Ball>(e.position, e.entityId, e.radius);
+    Ball* ball = static_cast<Ball*>(m_EntityManager.Lookup(m_ballId));
+    if (ball == nullptr) {
+      throw 1;
+    }
+    ball->SetVisible(true);
+    ball->SetDirection(e.dirX, e.dirY);
+    ball->SetSpeed(e.speed);
+    ball->SetMoving(true);
+  });
+
+
 }
 
 void Game::Run() {
@@ -81,7 +95,12 @@ void Game::UpdateState(double deltaTime) {
     return;
 	    
   if(m_pCurrentLevel->IsReady()) {
-    m_pCurrentLevel->UpdateState(deltaTime);  
+    m_pCurrentLevel->UpdateState(deltaTime);
+  }
+
+  Entity* ball = m_EntityManager.Lookup(m_ballId);
+  if(ball) {
+    ball->update(static_cast<float>(deltaTime));
   }
 
 }
@@ -95,6 +114,11 @@ void Game::RenderScreen() {
   Entity* player = m_EntityManager.Lookup(m_playerId);
   if(player) {
     player->draw(m_pRenderer.get());
+  }
+
+  Entity* ball = m_EntityManager.Lookup(m_ballId);
+  if(ball) {
+    ball->draw(m_pRenderer.get());
   }
 
   m_pRenderer->EndFrame({});
