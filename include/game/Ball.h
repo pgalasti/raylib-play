@@ -35,6 +35,9 @@ struct Ball : public Entity {
   void SetSpeed(float s)              { speed = s; }
   void SetDirection(float x, float y) { direction.x = x; direction.y = y; }
 
+  GPlay::Core::Vector2D<float> GetDirection() const { return direction; }
+  float                        GetSpeed()     const { return speed; }
+
 private:
 
   bool isInMotion;

@@ -10,7 +10,8 @@ namespace GPlay::Core {
 enum class EventType {
 
   EntityMovement,
-  BallCreate
+  BallCreate,
+  BallBounce
   // Add new ones here
 };
 
@@ -36,10 +37,20 @@ struct BallCreateEvent {
   BallCreateEvent(EntityID id, const EntityPos& position, float radius, float dirX, float dirY, float speed)
     : entityId{id}, position{position}, radius{radius}, dirX{dirX}, dirY{dirY}, speed{speed} {}
 };
+struct BallBounceEvent {
+
+  static constexpr EventType type = EventType::BallBounce;
+
+  float dirX, dirY;
+  float speed;
+
+  BallBounceEvent(float dirX, float dirY, float speed)
+    : dirX{dirX}, dirY{dirY}, speed{speed} {}
+};
 // Other event types here
 
 
-using Event = std::variant<EntityMovementEvent, BallCreateEvent>; // Add new types here.
+using Event = std::variant<EntityMovementEvent, BallCreateEvent, BallBounceEvent>; // Add new types here.
 
 } // GPlay::Core namespace
 

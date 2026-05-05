@@ -15,7 +15,7 @@ using namespace GPlay::Game;
 
 Game::Game(std::unique_ptr<FrameTimer> gameTimer, std::unique_ptr<GPlay::Renderer::Renderer> renderer)
 	: m_GameTimer{std::move(gameTimer)}, m_pRenderer{std::move(renderer)} {
-  m_Levels.push(std::make_unique<TestLevel>("Test Level", &m_EventBus, 1));
+  m_Levels.push(std::make_unique<TestLevel>("Test Level", &m_EventBus, &m_EntityManager, 1));
   
   GLOG("Levels loaded:")
   GLOG(m_Levels.size())
@@ -24,8 +24,9 @@ Game::Game(std::unique_ptr<FrameTimer> gameTimer, std::unique_ptr<GPlay::Rendere
 void Game::Initialize(const Game::WindowDesc& windowDescription) {
   auto [width, height, windowTitle, fps] = windowDescription;
   InitWindow(width, height, windowTitle.data());
-
   SetTargetFPS(fps);
+
+  m_Levels.front()->SetScreenDimensions(width, height);
 
   m_playerId = m_EntityManager.RegisterEntity<Player>(EntityPos{0.0f, 350.0f}, 20.0f, 100.0f);
   m_EntityManager.Lookup(m_playerId)->SetVisible(true);
@@ -47,6 +48,15 @@ void Game::Initialize(const Game::WindowDesc& windowDescription) {
     ball->SetDirection(e.dirX, e.dirY);
     ball->SetSpeed(e.speed);
     ball->SetMoving(true);
+    m_pCurrentLevel->SetBallId(m_ballId);
+  });
+
+  m_EventBus.Subscribe<BallBounceEvent>([this](const BallBounceEvent& e) {
+    GLOG("Ball bounce event picked up")
+    Ball* ball = static_cast<Ball*>(m_EntityManager.Lookup(m_ballId));
+    if (ball == nullptr) return;
+    ball->SetDirection(e.dirX, e.dirY);
+    ball->SetSpeed(e.speed);
   });
 
 
@@ -93,7 +103,9 @@ void Game::UpdateState(double deltaTime) {
   m_IsRunning = !WindowShouldClose();
   if(!m_IsRunning)
     return;
-	    
+
+  m_EventBus.Invoke();
+
   if(m_pCurrentLevel->IsReady()) {
     m_pCurrentLevel->UpdateState(deltaTime);
   }
@@ -109,7 +121,6 @@ void Game::RenderScreen() {
   m_pRenderer->StartFrame({});
 
   m_pRenderer->DrawText({"Should see this window", 0, 0, 50, 0});
-  m_EventBus.Invoke();
 
   Entity* player = m_EntityManager.Lookup(m_playerId);
   if(player) {
